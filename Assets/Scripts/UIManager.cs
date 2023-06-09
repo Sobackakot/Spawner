@@ -13,9 +13,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InputField inputFieldSpeed;
     [SerializeField] private InputField inputFieldDistance;
     [SerializeField] private InputField inputFieldInterval;
-    public string speed;
-    public string distance;
-    public string interval;
+    [HideInInspector]public string speed;
+    [HideInInspector] public string distance;
+    [HideInInspector] public string interval;
     #region S
     private void Awake()
     {
