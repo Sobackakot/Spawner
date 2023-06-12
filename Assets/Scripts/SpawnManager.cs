@@ -5,20 +5,20 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject prefab;
     private GameObject spawnedObject;
-    private UIManager uiManager;
-    private float speed = 15f;
-    private float distance = 20f;
-    private float interval = 2f;
+    private UIManager uiManager; 
+    private float speed;
+    private float distance;
+    private float interval;
 
     private void Start()
     {
         StartCoroutine(SpawnObject());
-        uiManager = UIManager.instance;
+        uiManager = UIManager.instance; 
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (spawnedObject != null)
+        if(spawnedObject != null)
         {
             MoveObject();
             CheckDistance();
@@ -26,48 +26,36 @@ public class SpawnManager : MonoBehaviour
     }
 
     private IEnumerator SpawnObject()
-    {
+    {   
         while (true)
-        {
-            float parsedInterval;
+        { 
             if (uiManager != null)
             {
-                if(float.TryParse(uiManager.interval, out parsedInterval))
-                {
-                    interval= parsedInterval;   
-                }
+                interval = uiManager.interval;
             }
-            spawnedObject = Instantiate(prefab, transform.position, transform.rotation);
+            spawnedObject = PoolingObjects.SpawnObject(prefab, prefab.transform.position, Quaternion.identity, PoolingObjects.PoolType.GameObject); 
             yield return new WaitForSeconds(interval);
         }
     }
 
     private void MoveObject()
-    {
-        float parsedSpeed;
-        if(uiManager!= null)
+    { 
+        if (uiManager!= null)
         {
-            if(float.TryParse(uiManager.speed, out parsedSpeed))
-            {
-                speed = parsedSpeed;
-            }
+            speed = uiManager.speed;
         }
         spawnedObject.transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     private void CheckDistance()
-    {
-        float parsedDistance;
-        if(uiManager!= null)
-        {
-            if (float.TryParse(uiManager.distance, out parsedDistance))
-            {
-                distance = parsedDistance; 
-            }
+    { 
+        if (uiManager!= null)
+        { 
+            distance = uiManager.distance;
         }
-        if (spawnedObject.transform.position.z >= distance)
+        if(spawnedObject.transform.position.z >= distance)
         {
-            Destroy(spawnedObject);
+            PoolingObjects.ReturnObjectToPool(spawnedObject);
         }
     }
 }

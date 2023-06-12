@@ -1,37 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; 
+
 
 public class UIManager : MonoBehaviour
 {   
     public static UIManager instance;
-    [SerializeField] private Text inputTextSpeed, speedText;
-    [SerializeField] private Text inputTextDistace, distanceText;
-    [SerializeField] private Text inputTextInterval, intervalText;
+    [SerializeField] private TextMeshProUGUI speedText;
+    [SerializeField] private TextMeshProUGUI distanceText;
+    [SerializeField] private TextMeshProUGUI intervalText;
     [SerializeField] private InputField inputFieldSpeed;
     [SerializeField] private InputField inputFieldDistance;
     [SerializeField] private InputField inputFieldInterval;
-    [HideInInspector]public string speed;
-    [HideInInspector] public string distance;
-    [HideInInspector] public string interval;
-    #region S
+    public float speed { get; set; }
+    public float distance { get; set; }
+    public float interval { get; set; }
+    #region Singleton
     private void Awake()
     {
         instance = this;
     }
     #endregion 
+
     public void SaveInputText()
-    {
-        speed = inputFieldSpeed.text;
-        distance = inputFieldDistance.text;
-        interval = inputFieldInterval.text;
+    {  
+        if(float.TryParse(inputFieldSpeed.text, out float speedValue))
+        speed = speedValue;
+        if(float.TryParse(inputFieldDistance.text, out float distanceValue))
+        distance = distanceValue;
+        if(float.TryParse(inputFieldInterval.text, out float intervalValue))
+        interval = intervalValue;
     }
     public void ShowText()
     {
-        speedText.text = speed;
-        distanceText.text = distance;
-        intervalText.text = interval;
+        speedText.text = speed.ToString();
+        distanceText.text = distance.ToString();
+        intervalText.text = interval.ToString();
     }
 }
