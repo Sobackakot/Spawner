@@ -13,7 +13,6 @@ public class PoolingObjects : MonoBehaviour
         GameObject,
         None
     }
-    public static PoolType PoolingType;
     private void Awake()
     {
         SetupEmpties();
