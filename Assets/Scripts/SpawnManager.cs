@@ -1,10 +1,11 @@
-using System.Collections; 
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject prefab;
-    private GameObject spawnedObject;
+    private Queue<GameObject> spawnedObjects = new Queue<GameObject>();
     private UIManager uiManager; 
     private float speed;
     private float distance;
@@ -13,18 +14,23 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(SpawnObject());
+        StartCoroutine(GeneratePrefabsAtIntervals());
         uiManager = UIManager.instance; 
     }
 
     private void LateUpdate()
     {
-        if(spawnedObject != null)
+        MoveObject();
+        CheckDistance();
+    }
+    private IEnumerator GeneratePrefabsAtIntervals()
+    {
+        while (true)
         {
-            MoveObject();
-            CheckDistance();
+            yield return new WaitForSeconds(interval);
+            EnqueuePrefabs();
         }
     }
-
     private IEnumerator SpawnObject()
     {   
         while (true)
@@ -33,9 +39,14 @@ public class SpawnManager : MonoBehaviour
             {
                 interval = uiManager.interval;
             }
-            spawnedObject = PoolingObjects.SpawnObject(prefab, prefab.transform.position, Quaternion.identity, PoolingObjects.PoolType.GameObject); 
+            spawnedObjects.Enqueue(PoolingObjects.SpawnObject(prefab, prefab.transform.position, Quaternion.identity, PoolingObjects.PoolType.GameObject));
             yield return new WaitForSeconds(interval);
         }
+    }
+    private void EnqueuePrefabs()
+    {
+        spawnedObjects.Enqueue(PoolingObjects.SpawnObject(prefab, prefab.transform.position, Quaternion.identity, PoolingObjects.PoolType.GameObject));
+
     }
 
     private void MoveObject()
@@ -44,7 +55,14 @@ public class SpawnManager : MonoBehaviour
         {
             speed = uiManager.speed;
         }
-        spawnedObject.transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        if (spawnedObjects.Count > 0)
+        {
+            foreach(GameObject spawnedObject in spawnedObjects)
+            {
+                spawnedObject.transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            }
+        }
+            
     }
 
     private void CheckDistance()
@@ -53,10 +71,14 @@ public class SpawnManager : MonoBehaviour
         { 
             distance = uiManager.distance;
         }
-        if(spawnedObject.transform.position.z >= distance)
+        if (spawnedObjects.Count > 0)
         {
-            PoolingObjects.ReturnObjectToPool(spawnedObject);
-        }
+            if (spawnedObjects.Peek().transform.position.z >= distance)
+            {
+                PoolingObjects.ReturnObjectToPool(spawnedObjects.Peek());
+                spawnedObjects.Dequeue();
+            }
+        } 
     }
 }
 
