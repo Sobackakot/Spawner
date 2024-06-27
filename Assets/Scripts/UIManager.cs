@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InputField inputFieldInterval;
     public float speed { get; set; }
     public float distance { get; set; }
-    public float interval { get; set; }
+    public float interval { get; set; } 
     #region Singleton
     private void Awake()
     {
