@@ -5,33 +5,41 @@ using UnityEngine.EventSystems;
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
     private RectTransform transformDropSlot;
-    private void Start()
+    private void Awake()
     {
         transformDropSlot = GetComponent<RectTransform>();
     }
      
     public void OnDrop(PointerEventData eventData)
-    { 
-        ItemInSlot pickItemInSlot = eventData.pointerDrag.GetComponent<ItemInSlot>();  
-        Item pickDataItem = pickItemInSlot.itemData;
+    {   
+        ItemInSlot pickItemInSlot = eventData.pointerDrag.GetComponent<ItemInSlot>();
+        Item pickDataItem = pickItemInSlot.currentItem;  
 
-        if(pickDataItem != null && transformDropSlot.childCount > 0)
+        if (pickDataItem != null && transformDropSlot.childCount > 0)
             DropItemInSlot(pickItemInSlot, pickDataItem);
     }
-    private void DropItemInSlot(ItemInSlot pickItemInSloto, Item pickDataItem)
+     
+    private void DropItemInSlot(ItemInSlot pickItemInSlot, Item pickDataItem)
     {
-        ItemInSlot dropItemInSlot = transformDropSlot.GetChild(0).GetComponent<ItemInSlot>();   
-        Item dropDataItem = dropItemInSlot.itemData;
-        dropItemInSlot.SetDataItem(pickDataItem);
+        ItemInSlot dropItemInSlot = transformDropSlot.GetChild(0).GetComponent<ItemInSlot>();
+        Item dropDataItem = dropItemInSlot.currentItem;
 
-        SwapItemInSlot(pickItemInSloto, dropDataItem); 
-    }
-    private void SwapItemInSlot(ItemInSlot pickItemInSloto, Item dropDataItem)
-    {
         if (dropDataItem != null)
-            pickItemInSloto.SetDataItem(dropDataItem);
-        else pickItemInSloto.ResetDataItem();
+        {
+            SetItemInSlot(dropItemInSlot, pickDataItem);
+            SwapItemInSlot(pickItemInSlot, dropDataItem);
+        }
+        else
+        {
+            SetItemInSlot(dropItemInSlot, pickDataItem);
+            ResetItemInSlot(pickItemInSlot);
+        }
+    } 
+    private void SwapItemInSlot(ItemInSlot pickItemInSlot, Item dropDataItem)
+    {
+        SetItemInSlot(pickItemInSlot, dropDataItem);
     }
+      
     public void SetItemInSlot(ItemInSlot item, Item data)
     {
         item.SetDataItem(data);

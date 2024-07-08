@@ -6,60 +6,59 @@ using UnityEngine.UI;
 
 public class ItemInSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    public int index { get; set; }
-    public Item itemData { get; private set; }
+    public Item currentItem;
 
     private Image _imageItem;
     private TextMeshProUGUI _nameItem;
 
     private Transform originTransform;
-    private RectTransform pickItemTransform;
+    private RectTransform rectTransform;
     private Canvas cancas;
     private CanvasGroup canvasGroup;
 
     private void Start()
     {
         originTransform = GetComponent<Transform>();
-        pickItemTransform = GetComponent<RectTransform>();
+        rectTransform = GetComponent<RectTransform>();
 
-        cancas = pickItemTransform.GetComponentInParent<Canvas>();
+        cancas = rectTransform.GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
         
         _imageItem =GetComponent<Image>();
-        _nameItem = pickItemTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
-    }
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.alpha = 0.5f;
-        originTransform = transform.parent;
-        pickItemTransform.SetParent(cancas.transform);
-        pickItemTransform.SetAsLastSibling();
+        _nameItem = rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
     }
 
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        canvasGroup.blocksRaycasts = false;  
+        originTransform = transform.parent; 
+        rectTransform.SetParent(cancas.transform); 
+        rectTransform.SetAsLastSibling();
+    }
     public void OnDrag(PointerEventData eventData)
     {
-        pickItemTransform.anchoredPosition += eventData.delta / cancas.scaleFactor;
+        rectTransform.anchoredPosition += eventData.delta / cancas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.alpha = 1f;
-        pickItemTransform.SetParent(originTransform);
+        canvasGroup.blocksRaycasts = true; 
+        rectTransform.SetParent(originTransform);
     }
-    public void SetDataItem(Item item) 
+     
+    public void SetDataItem(Item newItem) 
     { 
-        itemData = item;
-        _imageItem.sprite = itemData.imageItem;
-        _nameItem.text = itemData.nameItem;
-        _imageItem.enabled = true;
+        currentItem = newItem;
+        _imageItem.sprite = currentItem.imageItem;
+        _nameItem.text = currentItem.nameItem;
+        _imageItem.enabled = true;  
     }
     public void ResetDataItem()
     { 
-        itemData = null;
+        currentItem = null;
         _imageItem.sprite = null;
-        _nameItem.text = "";
+        _nameItem.text = " ";
         _imageItem.enabled = false;
-    } 
+    }
+     
 }

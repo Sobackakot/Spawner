@@ -13,19 +13,19 @@ public class PlayerController : MonoBehaviour
     private bool isTerra = false; // флажок для проверки что персонаж стоит на поверхности земли а не на воздухе
     private bool isRunning = false; //проверяем что мы бежим через шифт 
 
-    private Vector3 newDirectionKeyInput;
+    private Vector3 directionInput;
 
   
 
     private void Update()
     {
         CalculateDirectionMove();
-        Jumping();
+        Jumping(); 
     }
     private void CalculateDirectionMove()
     {    
-        Vector3 camZ = Vector3.ProjectOnPlane(transformCamera.forward, Vector3.up); // получаем направления камеры по оси Z
-        Vector3 camX = Vector3.ProjectOnPlane(transformCamera.right, Vector3.up); // получаем направления камеры по оси X
+        Vector3 cameraAxisZ = Vector3.ProjectOnPlane(transformCamera.forward, Vector3.up); // получаем направления камеры по оси Z
+        Vector3 cameraAxisX = Vector3.ProjectOnPlane(transformCamera.right, Vector3.up); // получаем направления камеры по оси X
 
         //Input.GetAxis("Horizontal") = это будет равно если мы нажиаем кнопки в право или в лево (D)=1 или (A)=-1  
         //Input.GetAxis("Vertical") = это будет равно если мы нажиаем кнопки в вперед или назад (W)=1 или  (S)=-1  
@@ -33,16 +33,16 @@ public class PlayerController : MonoBehaviour
         float X = Input.GetAxis("Horizontal");
         float Z = Input.GetAxis("Vertical");  
 
-        newDirectionKeyInput = new Vector3(X, 0, Z); // получаем текущее направление движения персонажа
+        directionInput = new Vector3(X, 0, Z); // получаем текущее направление движения персонажа
 
-        Vector3 directionMove = (newDirectionKeyInput.z * camZ) + (newDirectionKeyInput.x * camX);// приводим напрвление к направлению камеры
+        Vector3 newDirectionMove = (directionInput.z * cameraAxisZ) + (directionInput.x * cameraAxisX);// приводим напрвление к направлению камеры
 
         // проверяем что персонаж начал движение для того чтобы начать вращать персонажа в сторону направления камеры
-        if (directionMove.sqrMagnitude >= 0.2f) 
-            transform.rotation = Quaternion.LookRotation(directionMove); //поворачиваем персонажа в сторону камеры
+        if (newDirectionMove.sqrMagnitude >= 0.2f) 
+            transform.rotation = Quaternion.LookRotation(newDirectionMove, Vector3.up); //поворачиваем персонажа в сторону камеры
 
-        MovePerson(directionMove); // включаем движение персонажа по направлению камеры
-        PlayPersonAnim(newDirectionKeyInput); // включаем анимацию персонажа с помошью полученых осей
+        MovePerson(newDirectionMove); // включаем движение персонажа по направлению камеры
+        PlayPersonAnim(directionInput); // включаем анимацию персонажа с помошью полученых осей
     }
     private void MovePerson(Vector3 directionMove)// входящий параметр в качестве аргумента направление движения
     {
