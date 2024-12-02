@@ -29,6 +29,8 @@ public class FreeCameraController : MonoBehaviour
         RotateCamera();
         ZoomCamera();
     }
+
+
     public void RotateCamera()
     {
         transform.localEulerAngles = new Vector3(mouseY, mouseX, 0);
@@ -37,9 +39,12 @@ public class FreeCameraController : MonoBehaviour
     }
     private void GetDirectionRotateCamera()
     {
-        mouseX += Input.GetAxis("Mouse X") * sensitivityMouse;// -1, 0,  1
-        mouseY -= Input.GetAxis("Mouse Y") * sensitivityMouse;// -1, 0, 1
-        mouseY = Mathf.Clamp(mouseY, minAngle, maxAngle);
+        if (Input.GetMouseButton(2))
+        {
+            mouseX += Input.GetAxis("Mouse X") * sensitivityMouse;// -1, 0,  1
+            mouseY -= Input.GetAxis("Mouse Y") * sensitivityMouse;// -1, 0, 1
+            mouseY = Mathf.Clamp(mouseY, minAngle, maxAngle);
+        } 
     }
     public void ZoomCamera() 
     {

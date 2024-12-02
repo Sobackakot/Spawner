@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 8906200192549464634}
   - component: {fileID: 7561796070100169429}
   - component: {fileID: 2019641007100256651}
-  - component: {fileID: 7990240224376449018}
-  - component: {fileID: 5598392052394356177}
   m_Layer: 5
   m_Name: 'Slot '
   m_TagString: Untagged
@@ -103,30 +101,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!225 &7990240224376449018
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321701206591209594}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
---- !u!114 &5598392052394356177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321701206591209594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7833a6b78f6a47342bc230cb1d7508c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7692206642298423520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -135,9 +109,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8761989773331754946}
     m_Modifications:
+    - target: {fileID: 2065161473178421806, guid: ef2cc56fe5c675645bf54897188ed739, type: 3}
+      propertyPath: m_fontSize
+      value: 21.85
+      objectReference: {fileID: 0}
     - target: {fileID: 3715763070820977668, guid: ef2cc56fe5c675645bf54897188ed739, type: 3}
       propertyPath: m_Name
-      value: Item
+      value: ItemInSLot
       objectReference: {fileID: 0}
     - target: {fileID: 8664361094116839334, guid: ef2cc56fe5c675645bf54897188ed739, type: 3}
       propertyPath: m_Pivot.x
@@ -219,7 +197,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4636988845609983941, guid: ef2cc56fe5c675645bf54897188ed739, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

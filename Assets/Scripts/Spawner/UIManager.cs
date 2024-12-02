@@ -4,24 +4,17 @@ using UnityEngine.UI;
 
 
 public class UIManager : MonoBehaviour
-{   
-    public static UIManager instance;
+{    
     [SerializeField] private TextMeshProUGUI speedText;
     [SerializeField] private TextMeshProUGUI distanceText;
     [SerializeField] private TextMeshProUGUI intervalText;
     [SerializeField] private InputField inputFieldSpeed;
     [SerializeField] private InputField inputFieldDistance;
     [SerializeField] private InputField inputFieldInterval;
-    public float speed { get; set; }
-    public float distance { get; set; }
-    public float interval { get; set; } 
-    #region Singleton
-    private void Awake()
-    {
-        instance = this;
-    }
-    #endregion 
-
+    public float speed { get; private set; }
+    public float distance { get; private set; }
+    public float interval { get; private set; } 
+    
     public void SaveInputText()
     {  
         if(float.TryParse(inputFieldSpeed.text, out float speedValue))

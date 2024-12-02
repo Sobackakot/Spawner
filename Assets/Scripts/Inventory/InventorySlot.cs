@@ -47,5 +47,5 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void ResetItemInSlot(ItemInSlot item)
     {
         item.ResetDataItem();
-    }
+    } 
 }
