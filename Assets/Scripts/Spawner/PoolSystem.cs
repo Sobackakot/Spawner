@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PoolSystem : MonoBehaviour
-{
-    public static PoolSystem instance;
+{ 
     private Transform poolTransform;
     [SerializeField] private GameObject objectPrefub; 
     [SerializeField] private int poolSize = 100; 
     Queue<MoveObjectPrefub> pool = new Queue<MoveObjectPrefub>();
      
     private void Awake()
-    {
-        if(instance != null)
-        {
-            Destroy(gameObject);
-        }
-        instance = this;
-        DontDestroyOnLoad(instance);
-        InitializePool();
+    { 
         poolTransform = GetComponent<Transform>();
+        InitializePool(); 
     }
     // Spawn an object from the pool
     public MoveObjectPrefub Spawn(Vector3 position, Quaternion rotation)

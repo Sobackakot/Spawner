@@ -42,7 +42,11 @@ public class SpawnerObjects : MonoBehaviour
         {
             MoveObjectPrefub activeObject = activeObjects[i];
             bool isFinal = activeObject.UpdateMove();
-            if(isFinal) activeObjects.RemoveAt(i);
+            if (isFinal)
+            {
+                pool.ReturnToPool(activeObjects[i]);
+                activeObjects.RemoveAt(i);
+            }
         }
     }
     private void GetFromPoolAfterDelay()
