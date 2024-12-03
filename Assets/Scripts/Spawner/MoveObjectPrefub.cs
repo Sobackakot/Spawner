@@ -17,15 +17,16 @@ public class MoveObjectPrefub : MonoBehaviour
     {
         poolSystem = PoolSystem.instance;
     }
-    private void Update()
+    public bool UpdateMove()
     { 
         objTransform.position += objTransform.forward * speedMove * Time.deltaTime;
         float distance = Vector3.Distance(startPoint, objTransform.position);
         if(distance > maxDistance)
         {
             poolSystem.ReturnToPool(this);
-            Debug.Log("Destroy");
+           return true;
         }
+        return false;
     }
     public void InitializeMove(float speed, float maxDistance)
     {

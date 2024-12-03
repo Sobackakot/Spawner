@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnerObjects : MonoBehaviour
 {
+    private List<MoveObjectPrefub> activeObjects = new List<MoveObjectPrefub>();
     private PoolSystem pool;
     private UIManager ui;
     private Transform spawnTransform;
@@ -16,9 +18,13 @@ public class SpawnerObjects : MonoBehaviour
     {
         pool = FindObjectOfType<PoolSystem>();
         ui = FindObjectOfType<UIManager>();
-        spawnTransform = GetComponent<Transform>();
+        spawnTransform = GetComponent<Transform>(); 
     }
-     
+
+    private void Start()
+    {
+        activeObjects.AddRange(FindObjectsOfType<MoveObjectPrefub>());
+    }
     private void Update()
     {  
         interval = ui.interval;
@@ -32,11 +38,17 @@ public class SpawnerObjects : MonoBehaviour
             GetFromPoolAfterDelay(); 
             timer = 0;  
         } 
+        for(int i = activeObjects.Count -1; i >=0; i--)
+        {
+            MoveObjectPrefub activeObject = activeObjects[i];
+            bool isFinal = activeObject.UpdateMove();
+            if(isFinal) activeObjects.RemoveAt(i);
+        }
     }
     private void GetFromPoolAfterDelay()
     {
         MoveObjectPrefub newObject = pool.Spawn(spawnTransform.position, Quaternion.identity);
         newObject.InitializeMove(speedMove, distance);
-        Debug.Log("Spawn");
+        activeObjects.Add(newObject);
     } 
 }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PoolSystem : MonoBehaviour
 {
-    public static PoolSystem instance; 
+    public static PoolSystem instance;
+    private Transform poolTransform;
     [SerializeField] private GameObject objectPrefub; 
     [SerializeField] private int poolSize = 100; 
     Queue<MoveObjectPrefub> pool = new Queue<MoveObjectPrefub>();
@@ -17,7 +18,8 @@ public class PoolSystem : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(instance);
-        InitializePool(); 
+        InitializePool();
+        poolTransform = GetComponent<Transform>();
     }
     // Spawn an object from the pool
     public MoveObjectPrefub Spawn(Vector3 position, Quaternion rotation)
@@ -62,7 +64,7 @@ public class PoolSystem : MonoBehaviour
     private MoveObjectPrefub CreateNewObject()
     {
         GameObject obj = Instantiate(objectPrefub);
-        obj.transform.SetParent(transform); // Organize pool in hierarchy
+        obj.transform.SetParent(poolTransform); // Organize pool in hierarchy
         return obj.GetComponent<MoveObjectPrefub>();
     } 
 }
