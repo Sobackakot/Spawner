@@ -51,7 +51,7 @@ public class SpawnerObjects : MonoBehaviour
     }
     private void GetFromPoolAfterDelay()
     {
-        MoveObjectPrefub newObject = pool.Spawn(spawnTransform.position, Quaternion.identity);
+        MoveObjectPrefub newObject = pool.Spawn(spawnTransform.position, spawnTransform.rotation);
         newObject.InitializeMove(speedMove, distance);
         activeObjects.Add(newObject);
     } 

@@ -39,6 +39,7 @@ public class PoolSystem : MonoBehaviour
     public void ReturnToPool(MoveObjectPrefub obj)
     {
         obj.gameObject.SetActive(false);
+        obj.transform.position = poolTransform.position;
         pool.Enqueue(obj);
     }
 
@@ -49,6 +50,7 @@ public class PoolSystem : MonoBehaviour
         {
             MoveObjectPrefub obj = CreateNewObject();
             obj.gameObject.SetActive(false);
+            obj.transform.position = poolTransform.position;
             pool.Enqueue(obj);
         }
     }
